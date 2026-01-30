@@ -13,3 +13,8 @@ unsigned int slimeChunk(uint64_t seed, uint32_t xPos, uint32_t zPos)
     uint64_t rngState = setSeed((seed + (uint64_t)a + (uint64_t)b + (uint64_t)c + (uint64_t)d) ^ 0x3ad8025f);
     return (nextIntBounded(&rngState, 10) == 0);
 }
+
+unsigned int slimeChunkCoords(uint64_t seed, uint32_t xCoord, uint32_t zCoord)
+{
+    return slimeChunk(seed, xCoord / 16, zCoord / 16);
+}
