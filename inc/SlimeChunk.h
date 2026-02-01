@@ -15,7 +15,7 @@
  * 
  * @returns Boolean value (0 or 1) indicating if chunk is slime chunk or not.
  */
-unsigned int slimeChunk(uint64_t, uint32_t, uint32_t);
+unsigned int slimeChunk(int64_t, int32_t, int32_t);
 
 /**
  * @param seed Seed of world to check.
@@ -24,6 +24,11 @@ unsigned int slimeChunk(uint64_t, uint32_t, uint32_t);
  * 
  * @returns Boolean value (0 or 1) indicating if chunk is slime chunk or not.
  */
-unsigned int slimeChunkCoords(uint64_t, uint32_t, uint32_t);
+unsigned int slimeChunkCoords(int64_t, int32_t, int32_t);
+
+/**
+ * 
+ */
+void generateMap(int64_t, int32_t, int32_t, unsigned int, unsigned int);
 
 #endif

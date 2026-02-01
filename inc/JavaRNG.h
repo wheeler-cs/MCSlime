@@ -13,7 +13,7 @@
  * 
  * @returns Newly-initialzed RNG state.
  */
-uint64_t setSeed(uint64_t);
+int64_t setSeed(int64_t);
 
 /**
  * @param rngState The current RNG state.
@@ -21,14 +21,14 @@ uint64_t setSeed(uint64_t);
  * 
  * @returns Random value of a specified width.
  */
-uint64_t next(uint64_t *, unsigned int);
+int64_t next(int64_t *, unsigned int);
 
 /**
  * @param rngState The current RNG state.
  * 
  * @returns A 32-bit pseudorandom integer.
  */
-uint64_t nextInt(uint64_t *);
+int64_t nextInt(int64_t *);
 
 /**
  * @param rngState The current RNG state.
@@ -36,7 +36,7 @@ uint64_t nextInt(uint64_t *);
  * 
  * @returns A pseudorandom integer between 0 and the bound specified.
  */
-uint64_t nextIntBounded(uint64_t *, uint64_t);
+int64_t nextIntBounded(int64_t *, int64_t);
 
 
 

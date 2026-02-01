@@ -1,14 +1,17 @@
 #include "TermMenu.h"
 
+#include "SlimeChunk.h"
 #include "TermColors.h"
 
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void mainMenu()
 {
     char buff[256],
-         command[5][256];
+         command[6][256];
     unsigned int componentQuant;
 
     // Run program loop
@@ -30,10 +33,17 @@ void mainMenu()
            else
            {
                 parseCommand(buff, command, &componentQuant);
-                unsigned int i;
-                for(i = 0; i < componentQuant; i++)
+                // Generate a map of chunks using base coordinates
+                if(!(strcmp(command[0], "map")))
                 {
-                    printf("\n%s", command[i]);
+                    if(componentQuant == 6)
+                    {
+                        generateMap((int64_t)atoi(command[1]),
+                                    (int32_t)atoi(command[2]),
+                                    (int32_t)atoi(command[3]),
+                                    atoi(command[4]),
+                                    atoi(command[5]));
+                    }
                 }
            }
         }
@@ -61,6 +71,11 @@ void parseCommand(char * buffer, char parsedCommand[][256], unsigned int * compo
             // Copy string and update tracking variables
             strcpy(parsedCommand[*componentQuant], tempComp);
             *componentQuant += 1;
+            // Max number of components reached
+            if(*componentQuant >= 6)
+            {
+                break;
+            }
             head = tail + 1;
             // Reset temporary string
             for(i = 0; i < 256; i++)
@@ -81,7 +96,8 @@ void printHelp()
     // Exit program
     printf("\n\n\texit: Exit program");
     // Map command
-    printf("\n\n\tmap [x] [z] [w] [h]: Generate a map of slime chunks");
+    printf("\n\n\tmap [seed] [x] [z] [w] [h]: Generate a map of slime chunks");
+    printf("\n\t\tseed: Seed of world");
     printf("\n\t\tx: X-axis chunk block to set as origin");
     printf("\n\t\tz: Z-axis chunk block to set as origin");
     printf("\n\t\tw: Width of map to generate");

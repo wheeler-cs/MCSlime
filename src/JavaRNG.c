@@ -1,29 +1,29 @@
 #include "JavaRNG.h"
 
-uint64_t setSeed(uint64_t seed)
+int64_t setSeed(int64_t seed)
 {
     return (seed ^ (uint64_t)0x5deece66d) & (((uint64_t)1 << 48) - 1);
 }
 
-uint64_t next(uint64_t * rngState, unsigned int bits)
+int64_t next(int64_t * rngState, unsigned int bits)
 {
     *rngState = (*rngState * (uint64_t)0x5deece66d + (uint64_t)0xb) & (((uint64_t)1 << 48) - 1);
     return (uint64_t)(*rngState >> (48 - bits));
 }
 
-uint64_t nextInt(uint64_t * rngState)
+int64_t nextInt(int64_t * rngState)
 {
     return next(rngState, 32);
 }
 
-uint64_t nextIntBounded(uint64_t * rngState, uint64_t bound)
+int64_t nextIntBounded(int64_t * rngState, int64_t bound)
 {
     if((bound & (-1 * bound)) == bound)
     {
-        return (uint64_t)((bound * next(rngState, 31)) >> 31);
+        return (int64_t)((bound * next(rngState, 31)) >> 31);
     }
 
-    uint64_t bits, val;
+    int64_t bits, val;
     do
     {
         bits = next(rngState, 31);
