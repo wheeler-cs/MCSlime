@@ -3,6 +3,8 @@ project(MCSlime)
 
 string(TIMESTAMP CURRENT_DATE "%Y-%m-%d")
 add_compile_definitions(PROGRAM_VERSION="${CURRENT_DATE}")
+add_compile_options(-Wall -Wextra -Wpedantic)
+add_compile_options(-fwrapv)
 
 
 include_directories(${CMAKE_SOURCE_DIR}/inc)

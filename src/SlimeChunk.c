@@ -7,12 +7,13 @@
 
 unsigned int slimeChunk(int64_t seed, int32_t xPos, int32_t zPos)
 {
-    uint32_t a, b, c, d;
-    a = xPos * xPos * 0x4c1906;
-    b = xPos * 0x5ac0db;
-    c = zPos * zPos * 0x4307a7;
-    d = zPos * 0x5f24f;
-    int64_t rngState = setSeed((seed + (int64_t)a + (int64_t)b + (int64_t)c + (int64_t)d) ^ 0x3ad8025f);
+    int64_t rngSeed = ((seed +
+                        (xPos * xPos * 0x4c1906) +
+                        (xPos * 0x5ac0db) +
+                        (zPos * zPos) * 0x4307a7L +
+                        (zPos * 0x5f24f)) ^
+                       0x3ad8025fL);
+    int64_t rngState = setSeed(rngSeed);
     return (nextIntBounded(&rngState, 10) == 0);
 }
 
@@ -23,10 +24,11 @@ unsigned int slimeChunkCoords(int64_t seed, int32_t xCoord, int32_t zCoord)
 
 void generateMap(int64_t seed, int32_t xPos, int32_t zPos, unsigned int width, unsigned int height)
 {
-    unsigned int x, z, isSlimeChunk;
-    for(z = 0; z < height; z++)
+    unsigned int isSlimeChunk;
+    int32_t x, z;
+    for(z = 0; z < (int32_t)height; z++)
     {
-        for(x = 0; x < width; x++)
+        for(x = 0; x < (int32_t)width; x++)
         {
             isSlimeChunk = slimeChunk(seed, xPos + x, zPos + z);
             if(isSlimeChunk)
