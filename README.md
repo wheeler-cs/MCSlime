@@ -19,3 +19,6 @@ cmake --build .
 The resulting program will be name `MCSlime` by default.
 
 No external libraries are used, and all of the logic, including RNG algorithms, have been reimplemented in C.
+
+## Documentation
+Documentation for the code is currently provided in the form of Doxygen-format docstrings. The docstring for a given function can be found in the corresponding `.h` file in the [inc](./inc/) directory.
