@@ -11,7 +11,7 @@
 void mainMenu()
 {
     char buff[256],
-         command[6][256];
+         command[8][256];
     unsigned int componentQuant;
 
     // Run program loop
@@ -45,6 +45,19 @@ void mainMenu()
                                     atoi(command[5]));
                     }
                 }
+                else if(!(strcmp(command[0], "box")))
+                {
+                    if(componentQuant == 8)
+                    {
+                        linearBoxSearch((int64_t)atoi(command[1]),
+                                        (int32_t)atoi(command[2]),
+                                        (int32_t)atoi(command[3]),
+                                        (int32_t)atoi(command[4]),
+                                        (int32_t)atoi(command[5]),
+                                        (int32_t)atoi(command[6]),
+                                        (int32_t)atoi(command[7]));
+                    }
+                }
            }
         }
     } while(runProg);
@@ -72,7 +85,7 @@ void parseCommand(char * buffer, char parsedCommand[][256], unsigned int * compo
             strcpy(parsedCommand[*componentQuant], tempComp);
             *componentQuant += 1;
             // Max number of components reached
-            if(*componentQuant >= 6)
+            if(*componentQuant >= 8)
             {
                 break;
             }
@@ -102,5 +115,15 @@ void printHelp()
     printf("\n\t\tz: Z-axis chunk block to set as origin");
     printf("\n\t\tw: Width of map to generate");
     printf("\n\t\th: Height of map to generate");
+    printf("\n");
+    // Box command
+    printf("\n\n\tbox [seed] [ox] [oy] [sw] [sh] [bw] [bh]");
+    printf("\n\t\tseed: Seed of world");
+    printf("\n\t\tox: X-axis origin chunk block");
+    printf("\n\t\toy: Y-axis origin chunk block");
+    printf("\n\t\tsw: Width of search");
+    printf("\n\t\tsh: Height of search");
+    printf("\n\t\tbw: Width of box to find");
+    printf("\n\t\tbh: Height of box to find");
     printf("\n");
 }
