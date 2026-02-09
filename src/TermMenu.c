@@ -19,7 +19,7 @@ void mainMenu()
     runProg = 1;
     do
     {
-        printf("> ");
+        printf("\n> ");
         if(fgets(buff, sizeof(buff), stdin) != NULL)
         {
            if(!(strcmp(buff, "exit\n")))
@@ -36,14 +36,7 @@ void mainMenu()
                 // Generate a map of chunks using base coordinates
                 if(!(strcmp(command[0], "map")))
                 {
-                    if(componentQuant == 6)
-                    {
-                        generateMap((int64_t)atoi(command[1]),
-                                    (int32_t)atoi(command[2]),
-                                    (int32_t)atoi(command[3]),
-                                    atoi(command[4]),
-                                    atoi(command[5]));
-                    }
+                    tryGenerateMap(command, componentQuant);
                 }
                 else if(!(strcmp(command[0], "box")))
                 {
@@ -96,6 +89,24 @@ void parseCommand(char * buffer, char parsedCommand[][256], unsigned int * compo
                 tempComp[i] = '\0';
             }
         }
+    }
+}
+
+void tryGenerateMap(char components[][256], unsigned int componentQuant)
+{
+    // Safeguard to make sure correct number of arguments passed in
+    if(componentQuant == 6)
+    {
+        generateMap((int64_t)atoi(components[1]),
+                    (int32_t)atoi(components[2]),
+                    (int32_t)atoi(components[3]),
+                    atoi(components[4]),
+                    atoi(components[5]));
+    }
+    // Print an error message for not enough or too many arguments
+    else
+    {
+        printf("\nIncorrect number of arguments supplied with 'map' command\n");
     }
 }
 

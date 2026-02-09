@@ -16,6 +16,14 @@ void mainMenu();
 void parseCommand(char *, char [][256], unsigned int *);
 
 /**
+ * @brief Calls map generation function if arguments are appropriate.
+ * 
+ * @param components Parsed components of a command entered in terminal.
+ * @param componentQuant Number of components in `components` array.
+ */
+void tryGenerateMap(char [][256], unsigned int);
+
+/**
  * @brief Print help menu that describes commands to terminal.
  */
 void printHelp();
