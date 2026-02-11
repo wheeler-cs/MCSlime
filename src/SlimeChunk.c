@@ -1,5 +1,6 @@
 #include "SlimeChunk.h"
 
+#include "Arguments.h"
 #include "TermColors.h"
 #include "JavaRNG.h"
 
@@ -53,7 +54,15 @@ void generateMap(int64_t seed, int32_t xPos, int32_t zPos, unsigned int width, u
 
 void linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOrigin, int32_t searchWidth, int32_t searchHeight, int boxWidth, int boxHeight)
 {
-    printf("\nSearching for a %d-by-%d", boxWidth, boxHeight);
+    // Print Search Information
+    setDecoration(DECOR_BOLD);
+    printf("Search Settings");
+    resetTextGraphics();
+    printf("\nX-Origin: %d, Z-Origin: %d", xOrigin, zOrigin);
+    printf("\nSearch Area: %d-by-%d", searchWidth, searchHeight);
+    printf("\nBox Size: %d-by-%d", boxWidth, boxHeight);
+    fflush(stdout);
+    // Prepare search variables
     int32_t x, z, i, j;
     int grouping, groupsFound;
     groupsFound = 0;
