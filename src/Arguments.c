@@ -1,5 +1,7 @@
 #include "Arguments.h"
 
+#include "TermColors.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -89,6 +91,7 @@ struct ProgramState parseArgv(int argc, char ** argv)
                 state.zRange = (int32_t)atoi(argv[i + 1]);
             }
         }
+        // Read width parameter of operation
         else if(!(strcmp(argv[i], "-w")))
         {
             if(argc <= i + 1)
@@ -102,6 +105,7 @@ struct ProgramState parseArgv(int argc, char ** argv)
                 state.width = (int32_t)atoi(argv[i + 1]);
             }
         }
+        // Read height parameter of operation
         else if(!(strcmp(argv[i], "-h")))
         {
             if(argc <= i + 1)
@@ -116,7 +120,7 @@ struct ProgramState parseArgv(int argc, char ** argv)
             }
         }
         // Read in parameter for seed
-        else if(!(strcmp(argv[i], "-s")))
+        else if((!strcmp(argv[i], "-s")) || (!strcmp(argv[i], "--seed")))
         {
             if(argc <= i + 1)
             {
@@ -126,10 +130,39 @@ struct ProgramState parseArgv(int argc, char ** argv)
             }
             else
             {
-                state.seed = (int64_t)atoi(argv[i + 1]);
+                char * end = NULL;
+                state.seed = (int64_t)strtoll(argv[i + 1], &end, 10);
             }
+        }
+        // Print help menu and quit
+        else if(!(strcmp(argv[i], "--help")))
+        {
+            // Print help and make sure program exits
+            argError = 1;
+            state.mode = MODE_ERROR;
+            printArgHelp();
         }
     }
 
     return state;
+}
+
+void printArgHelp(void)
+{
+    setCursorPosition(1, 1);
+    clearScreen();
+    setDecoration(DECOR_BOLD);
+    printf("\n\nUsage:\nMCSlime [mode] [arguments]");
+    resetTextGraphics();
+    // Box search
+    printf("\n\n\t--box --seed [seed] -x [x origin] -z [z origin] -xr [x radius] -zr [z radius] -w [width] -h [height]");
+    printf("\n\t\t--seed: Seed of world to perform check in.");
+    printf("\n\t\t-x: Chunk coordinate origin along x-axis for search.");
+    printf("\n\t\t-z: Chunk coordinate origin along z-axis for search.");
+    printf("\n\t\t-xr: Width of search along the x-axis.");
+    printf("\n\t\t-zr: Height of search along the z-axis.");
+    printf("\n\t\t-w: Width of box to search for.");
+    printf("\n\t\t-h: Height of box to search for.");
+
+    printf("\n");
 }

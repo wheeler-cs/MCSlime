@@ -56,11 +56,11 @@ void linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOrigin, int32_t sea
 {
     // Print Search Information
     setDecoration(DECOR_BOLD);
-    printf("Search Settings");
+    printf("Searching (%ld)", seed);
     resetTextGraphics();
     printf("\nX-Origin: %d, Z-Origin: %d", xOrigin, zOrigin);
     printf("\nSearch Area: %d-by-%d", searchWidth, searchHeight);
-    printf("\nBox Size: %d-by-%d", boxWidth, boxHeight);
+    printf("\nBox Size: %d-by-%d\n", boxWidth, boxHeight);
     fflush(stdout);
     // Prepare search variables
     int32_t x, z, i, j;
