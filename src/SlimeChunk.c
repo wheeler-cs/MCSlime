@@ -71,8 +71,6 @@ struct SlimeReport * linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOri
     int grouping;
     struct SlimeReport * report;
     report = allocateReport();
-    //report = malloc(sizeof(struct SlimeReport));
-    //report->report = NULL;
     // Iterate through range of chunks
     for(z = zOrigin, progress = 0; z < zOrigin + searchHeight; z++, progress++)
     {
@@ -96,7 +94,7 @@ struct SlimeReport * linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOri
                         }
                     }
                 }
-                // Shape was found, print to terminal
+                // Shape was found, add new entry to report
                 if(grouping)
                 {
                     // Initialize memory if new instance

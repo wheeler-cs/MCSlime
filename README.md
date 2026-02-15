@@ -20,5 +20,8 @@ The resulting program will be name `MCSlime` by default.
 
 No external libraries are used, and all of the logic, including RNG algorithms, have been reimplemented in C.
 
+## Accuracy
+Accuracy of this tool is not guaranteed. While an explicit goal of the project is to have a slime chunk generator with one-to-one accuracy with the Java implementation, the algorithms used by Minecraft rely on integer overflow. The `-fwrapv` argument is supplied when compiling the program in an effort to mimic this behavior, but signed integer underflow and overflow is still technically undefined behavior in C.
+
 ## Documentation
 Documentation for the code is currently provided in the form of Doxygen-format docstrings. The docstring for a given function can be found in the corresponding `.h` file in the [inc](./inc/) directory.

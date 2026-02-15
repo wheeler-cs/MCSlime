@@ -86,7 +86,9 @@ struct SlimeReport * linearBoxSearch(int64_t, int32_t, int32_t, int32_t, int32_t
 void printReport(struct SlimeReport *);
 
 /**
+ * @brief Allocate and initialize a new instance of SlimeReport.
  * 
+ * @returns Newly-instantiated SlimeReport structure.
  */
 struct SlimeReport * allocateReport(void);
 
