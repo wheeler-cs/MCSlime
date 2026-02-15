@@ -2,9 +2,11 @@
 
 #include "Arguments.h"
 #include "TermColors.h"
+#include "TermMenu.h"
 #include "JavaRNG.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 unsigned int slimeChunk(int64_t seed, int32_t xPos, int32_t zPos)
 {
@@ -52,9 +54,11 @@ void generateMap(int64_t seed, int32_t xPos, int32_t zPos, unsigned int width, u
     }
 }
 
-void linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOrigin, int32_t searchWidth, int32_t searchHeight, int boxWidth, int boxHeight)
+struct SlimeReport * linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOrigin, int32_t searchWidth, int32_t searchHeight, int boxWidth, int boxHeight)
 {
     // Print Search Information
+    clearScreen();
+    setCursorPosition(1, 1);
     setDecoration(DECOR_BOLD);
     printf("Searching (%ld)", seed);
     resetTextGraphics();
@@ -63,12 +67,17 @@ void linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOrigin, int32_t sea
     printf("\nBox Size: %d-by-%d\n", boxWidth, boxHeight);
     fflush(stdout);
     // Prepare search variables
-    int32_t x, z, i, j;
-    int grouping, groupsFound;
-    groupsFound = 0;
+    int32_t x, z, i, j, progress;
+    int grouping;
+    struct SlimeReport * report;
+    report = allocateReport();
+    //report = malloc(sizeof(struct SlimeReport));
+    //report->report = NULL;
     // Iterate through range of chunks
-    for(z = zOrigin; z < zOrigin + searchHeight; z++)
+    for(z = zOrigin, progress = 0; z < zOrigin + searchHeight; z++, progress++)
     {
+        printProgressBar(1, 5, 80, (double)progress / (double)searchHeight);
+        setCursorPosition(1, 6);
         for(x = xOrigin; x < xOrigin + searchWidth; x++)
         {
             // Slime chunk found, perform check to see if box of chunks is found
@@ -90,19 +99,63 @@ void linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOrigin, int32_t sea
                 // Shape was found, print to terminal
                 if(grouping)
                 {
-                    groupsFound++;
-                    printf("\nFound grouping at x:%d z:%d", x * 16, z * 16);
+                    // Initialize memory if new instance
+                    if(report->report == NULL)
+                    {
+                        report->report = malloc(sizeof(struct SlimeChunkCoords));
+                    }
+                    // Reallocate array to fit new entry
+                    else
+                    {
+                        report->report = realloc(report->report, (report->reportSize + 1) * sizeof(struct SlimeChunkCoords));
+                    }
+                    report->report[report->reportSize].x = x * 16;
+                    report->report[report->reportSize].z = z * 16;
+                    report->report[report->reportSize].width = boxWidth;
+                    report->report[report->reportSize].height = boxHeight;
+                    report->reportSize += 1;
                 }
             }
         }
     }
-    if(!groupsFound)
-    {
-        printf("\nNo groups found");
-    }
-    else
-    {
-        printf("\nFound %d groups", groupsFound);
-    }
+    printReport(report);
     printf("\n");
+    return report;
+}
+
+void printReport(struct SlimeReport * report)
+{
+    unsigned int i;
+    printf("Found (%d) Entries", report->reportSize);
+    for(i = 0; i < report->reportSize; i++)
+    {
+        printf("\nx: %d z: %d", report->report[i].x, report->report[i].z);
+    }
+}
+
+struct SlimeReport * allocateReport(void)
+{
+    struct SlimeReport * rPtr;
+    rPtr = malloc(sizeof(struct SlimeReport));
+    rPtr->reportSize = 0;
+    rPtr->report = NULL;
+
+    return rPtr;
+}
+
+void deallocateReport(struct SlimeReport * report)
+{
+    // Only deallocate if pointer is not NULL
+    if(report != NULL)
+    {
+        // Deallocate coordinate structures
+        if(report->report != NULL)
+        {
+            free(report->report);
+            report->report = NULL;
+        }
+        // Deallocate actual report
+        free(report);
+        report = NULL;
+    }
 }

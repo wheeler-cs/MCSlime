@@ -11,7 +11,7 @@
 void mainMenu()
 {
     char buff[256],
-         command[8][256];
+         command[COMMAND_BUFFER_SIZE][256];
     unsigned int componentQuant;
 
     // Run program loop
@@ -38,17 +38,20 @@ void mainMenu()
                 {
                     tryGenerateMap(command, componentQuant);
                 }
+                // Perform a box search for a given seed
                 else if(!(strcmp(command[0], "box")))
                 {
                     if(componentQuant == 8)
                     {
-                        linearBoxSearch((int64_t)atoi(command[1]),
-                                        (int32_t)atoi(command[2]),
-                                        (int32_t)atoi(command[3]),
-                                        (int32_t)atoi(command[4]),
-                                        (int32_t)atoi(command[5]),
-                                        (int32_t)atoi(command[6]),
-                                        (int32_t)atoi(command[7]));
+                        struct SlimeReport * report;
+                        report = linearBoxSearch((int64_t)atoi(command[1]),
+                                                 (int32_t)atoi(command[2]),
+                                                 (int32_t)atoi(command[3]),
+                                                 (int32_t)atoi(command[4]),
+                                                 (int32_t)atoi(command[5]),
+                                                 (int32_t)atoi(command[6]),
+                                                 (int32_t)atoi(command[7]));
+                        deallocateReport(report);
                     }
                 }
            }
@@ -78,7 +81,7 @@ void parseCommand(char * buffer, char parsedCommand[][256], unsigned int * compo
             strcpy(parsedCommand[*componentQuant], tempComp);
             *componentQuant += 1;
             // Max number of components reached
-            if(*componentQuant >= 8)
+            if(*componentQuant >= COMMAND_BUFFER_SIZE)
             {
                 break;
             }
@@ -137,4 +140,30 @@ void printHelp()
     printf("\n\t\tbw: Width of box to find");
     printf("\n\t\tbh: Height of box to find");
     printf("\n");
+}
+
+void printProgressBar(unsigned int x, unsigned int y, unsigned int width, double progress)
+{
+    unsigned int filled, i;
+    // Terminal indexing starts at 1, not 0
+    if(x < 1)
+    {
+        x = 1;
+    }
+    if(y < 1)
+    {
+        y = 1;
+    }
+    setCursorPosition(y, x);
+    // Print filled portion of bar
+    filled = width * progress;
+    for(i = 0; i < filled; i++)
+    {
+        printf("#");
+    }
+    // Print unfilled portion of bar
+    for(i = filled; i < width; i++)
+    {
+        printf("-");
+    }
 }

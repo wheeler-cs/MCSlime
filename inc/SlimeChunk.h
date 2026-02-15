@@ -4,6 +4,28 @@
 #include <stdint.h>
 
 /**
+ * @brief Stores location of slime chunk groupings.
+ */
+struct SlimeChunkCoords
+{
+    int32_t x,              //< X-coordinate of chunk grouping
+            z;              //< Z-coordinate of chunk grouping
+    unsigned int width,     //< Width of chunk grouping
+                 height;    //< Height of chunk grouping
+};
+
+/**
+ * @brief Report of slime chunks fitting a certain criteria.
+ * 
+ * @note The `report` variable is dynamically allocated during runtime.
+ */
+struct SlimeReport
+{
+    unsigned int reportSize;            //< Number of entries in `report`
+    struct SlimeChunkCoords * report;   //< Array of reports fitting a criteria
+};
+
+/**
  * Slime chunk generation algorithm sourced from:
  * https://minecraft.fandom.com/wiki/Slime#Java_Edition
  */
@@ -51,7 +73,28 @@ void generateMap(int64_t, int32_t, int32_t, unsigned int, unsigned int);
  * @param searchHeight Height of search in chunks.
  * @param boxWidth Width of box to search for in chunks.
  * @param boxHeight Height of box to search for in chunks.
+ * 
+ * @returns Report containing all chunks that fit the specified grouping.
  */
-void linearBoxSearch(int64_t, int32_t, int32_t, int32_t, int32_t, int, int);
+struct SlimeReport * linearBoxSearch(int64_t, int32_t, int32_t, int32_t, int32_t, int, int);
+
+/**
+ * @brief Print slime chunk report to terminal.
+ * 
+ * @param report Report to be printed to terminal.
+ */
+void printReport(struct SlimeReport *);
+
+/**
+ * 
+ */
+struct SlimeReport * allocateReport(void);
+
+/**
+ * @brief Deallocate memory used for report.
+ * 
+ * @param report Report containing memory to be deallocated.
+ */
+void deallocateReport(struct SlimeReport *);
 
 #endif
