@@ -74,8 +74,11 @@ struct SlimeReport * linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOri
     // Iterate through range of chunks
     for(z = zOrigin, progress = 0; z < zOrigin + searchHeight; z++, progress++)
     {
-        printProgressBar(1, 5, 80, (double)progress / (double)searchHeight);
-        setCursorPosition(1, 6);
+        // Update search progress for every x-axis row completed
+        setCursorPosition(5, 1);
+        printf("Matches Found: %d\n", report->reportSize);
+        printProgressBar(6, 1, 80, (double)progress / (double)searchHeight);
+        setCursorPosition(7, 1);
         for(x = xOrigin; x < xOrigin + searchWidth; x++)
         {
             // Slime chunk found, perform check to see if box of chunks is found

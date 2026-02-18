@@ -4,6 +4,11 @@
 #include <stdint.h>
 
 /**
+ * Slime chunk generation algorithm sourced from:
+ * https://minecraft.fandom.com/wiki/Slime#Java_Edition
+ */
+
+/**
  * @brief Stores location of slime chunk groupings.
  */
 struct SlimeChunkCoords
@@ -24,11 +29,6 @@ struct SlimeReport
     unsigned int reportSize;            //< Number of entries in `report`
     struct SlimeChunkCoords * report;   //< Array of reports fitting a criteria
 };
-
-/**
- * Slime chunk generation algorithm sourced from:
- * https://minecraft.fandom.com/wiki/Slime#Java_Edition
- */
 
 /**
  * @brief Calculates if a chunk is a slime chunk using chunk block position.
