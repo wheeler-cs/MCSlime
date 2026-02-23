@@ -31,17 +31,17 @@ struct SlimeReport
 };
 
 /**
- * 
+ * @brief Parameters for search operation to be performed.
  */
 struct SearchParameters
 {
-    int64_t seed;
-    int32_t xOrigin,
-            zOrigin,
-            searchWidth,
-            searchHeight;
-    int boxWidth,
-        boxHeight;
+    int64_t seed;           //< Seed of world to search
+    int32_t xOrigin,        //< X-axis origin for search operation
+            zOrigin,        //< Z-axis origin for search operation
+            searchWidth,    //< Limit along x-axis to search
+            searchHeight;   //< Limit along z-axis to search
+    int boxWidth,           //< Width of box of chunks to search for
+        boxHeight;          //< Height of box of chunks to search for
 };
 
 /**
