@@ -54,17 +54,17 @@ void generateMap(int64_t seed, int32_t xPos, int32_t zPos, unsigned int width, u
     }
 }
 
-struct SlimeReport * linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOrigin, int32_t searchWidth, int32_t searchHeight, int boxWidth, int boxHeight)
+struct SlimeReport * linearBoxSearch(struct SearchParameters params)
 {
     // Print Search Information
     clearScreen();
     setCursorPosition(1, 1);
     setDecoration(DECOR_BOLD);
-    printf("Searching (%ld)", seed);
+    printf("Searching (%ld)", params.seed);
     resetTextGraphics();
-    printf("\nX-Origin: %d, Z-Origin: %d", xOrigin, zOrigin);
-    printf("\nSearch Area: %d-by-%d", searchWidth, searchHeight);
-    printf("\nBox Size: %d-by-%d\n", boxWidth, boxHeight);
+    printf("\nX-Origin: %d, Z-Origin: %d", params.xOrigin, params.zOrigin);
+    printf("\nSearch Area: %d-by-%d", params.searchWidth, params.searchHeight);
+    printf("\nBox Size: %d-by-%d\n", params.boxWidth, params.boxHeight);
     fflush(stdout);
     // Prepare search variables
     int32_t x, z, i, j, progress;
@@ -72,25 +72,25 @@ struct SlimeReport * linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOri
     struct SlimeReport * report;
     report = allocateReport();
     // Iterate through range of chunks
-    for(z = zOrigin, progress = 0; z < zOrigin + searchHeight; z++, progress++)
+    for(z = params.zOrigin, progress = 0; z < params.zOrigin + params.searchHeight; z++, progress++)
     {
         // Update search progress for every x-axis row completed
         setCursorPosition(5, 1);
         printf("Matches Found: %d\n", report->reportSize);
-        printProgressBar(6, 1, 80, (double)progress / (double)searchHeight);
+        printProgressBar(6, 1, 80, (double)progress / (double)params.searchHeight);
         setCursorPosition(7, 1);
-        for(x = xOrigin; x < xOrigin + searchWidth; x++)
+        for(x = params.xOrigin; x < params.xOrigin + params.searchWidth; x++)
         {
             // Slime chunk found, perform check to see if box of chunks is found
-            if(slimeChunk(seed, x, z))
+            if(slimeChunk(params.seed, x, z))
             {
                 grouping = 1;
-                for(i = 0; i < (int32_t)boxWidth && grouping; i++)
+                for(i = 0; i < (int32_t)params.boxWidth && grouping; i++)
                 {
-                    for(j = 0; j < (int32_t)boxHeight; j++)
+                    for(j = 0; j < (int32_t)params.boxHeight; j++)
                     {
                         // Box of specified size not found
-                        if(!slimeChunk(seed, x + i, z + j))
+                        if(!slimeChunk(params.seed, x + i, z + j))
                         {
                             grouping = 0;
                             break;
@@ -112,8 +112,8 @@ struct SlimeReport * linearBoxSearch(int64_t seed, int32_t xOrigin, int32_t zOri
                     }
                     report->report[report->reportSize].x = x * 16;
                     report->report[report->reportSize].z = z * 16;
-                    report->report[report->reportSize].width = boxWidth;
-                    report->report[report->reportSize].height = boxHeight;
+                    report->report[report->reportSize].width = params.boxWidth;
+                    report->report[report->reportSize].height = params.boxHeight;
                     report->reportSize += 1;
                 }
             }

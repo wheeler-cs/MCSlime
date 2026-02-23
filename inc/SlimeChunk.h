@@ -31,6 +31,20 @@ struct SlimeReport
 };
 
 /**
+ * 
+ */
+struct SearchParameters
+{
+    int64_t seed;
+    int32_t xOrigin,
+            zOrigin,
+            searchWidth,
+            searchHeight;
+    int boxWidth,
+        boxHeight;
+};
+
+/**
  * @brief Calculates if a chunk is a slime chunk using chunk block position.
  * 
  * @param seed Seed of world to check.
@@ -65,18 +79,12 @@ void generateMap(int64_t, int32_t, int32_t, unsigned int, unsigned int);
 
 /**
  * @brief Perform a linear search to find boxes of slime chunks in a given height and width.
- * 
- * @param seed Seed of world to check.
- * @param xOrigin Chunk block origin x value to start check at.
- * @param yOrigin Chunk block origin z valye to start check at.
- * @param searchWidth Width of search in chunks.
- * @param searchHeight Height of search in chunks.
- * @param boxWidth Width of box to search for in chunks.
- * @param boxHeight Height of box to search for in chunks.
+ *
+ * @param params Parameters for box search.
  * 
  * @returns Report containing all chunks that fit the specified grouping.
  */
-struct SlimeReport * linearBoxSearch(int64_t, int32_t, int32_t, int32_t, int32_t, int, int);
+struct SlimeReport * linearBoxSearch(struct SearchParameters);
 
 /**
  * @brief Print slime chunk report to terminal.
