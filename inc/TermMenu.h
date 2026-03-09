@@ -1,6 +1,18 @@
 #ifndef _TERMMENU_H
 #define _TERMMENU_H
 
+#ifndef PROGRAM_VERSION
+#define PROGRAM_VERSION "Unspecified"
+#endif
+
+#ifndef COMPILER_TYPE
+#define COMPILER_TYPE "Unknown"
+#endif
+
+#ifndef COMPILER_VERSION
+#define COMPILER_VERSION "\0"
+#endif
+
 #define COMMAND_BUFFER_SIZE 8
 
 /**
@@ -24,6 +36,11 @@ void parseCommand(char *, char [][256], unsigned int *);
  * @param componentQuant Number of components in `components` array.
  */
 void tryGenerateMap(char [][256], unsigned int);
+
+/**
+ * @brief Prints information about program on startup
+ */
+void printProgramInfo();
 
 /**
  * @brief Print help menu that describes commands to terminal.

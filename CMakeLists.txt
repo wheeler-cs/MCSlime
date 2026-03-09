@@ -3,6 +3,8 @@ project(MCSlime)
 
 string(TIMESTAMP CURRENT_DATE "%Y-%m-%d")
 add_compile_definitions(PROGRAM_VERSION="${CURRENT_DATE}")
+add_compile_definitions(COMPILER_TYPE="${CMAKE_CXX_COMPILER_ID}")
+add_compile_definitions(COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
 add_compile_options(-Wall -Wextra -Wpedantic)
 add_compile_options(-fwrapv)
 

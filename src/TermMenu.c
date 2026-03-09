@@ -30,6 +30,15 @@ void mainMenu()
            {
                 printHelp();
            }
+           else if(!(strcmp(buff, "info\n")))
+           {
+                printProgramInfo();
+           }
+           else if(!(strcmp(buff, "clear\n")))
+           {
+                clearScreen();
+                setCursorPosition(0, 0);
+           }
            else
            {
                 parseCommand(buff, command, &componentQuant);
@@ -111,6 +120,19 @@ void tryGenerateMap(char components[][256], unsigned int componentQuant)
     {
         printf("\nIncorrect number of arguments supplied with 'map' command\n");
     }
+}
+
+void printProgramInfo()
+{
+    clearScreen();
+    setCursorPosition(0, 0);
+    setDecoration(DECOR_BOLD);
+    setColor(FG_GREEN);
+    printf("\n      || MCSlime ||");
+    resetTextGraphics();
+    printf("\n  Written by Anna Wheeler");
+    printf("\n\nCompilation Date: %s", PROGRAM_VERSION);
+    printf("\nCompiled using %s %s\n", COMPILER_TYPE, COMPILER_VERSION);
 }
 
 void printHelp()
