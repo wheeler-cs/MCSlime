@@ -4,6 +4,11 @@
 #include <stdint.h>
 
 /**
+ * Slime chunk generation algorithm sourced from:
+ * https://minecraft.fandom.com/wiki/Slime#Java_Edition
+ */
+
+/**
  * @brief Stores location of slime chunk groupings.
  */
 struct SlimeChunkCoords
@@ -26,9 +31,18 @@ struct SlimeReport
 };
 
 /**
- * Slime chunk generation algorithm sourced from:
- * https://minecraft.fandom.com/wiki/Slime#Java_Edition
+ * @brief Parameters for search operation to be performed.
  */
+struct SearchParameters
+{
+    int64_t seed;           //< Seed of world to search
+    int32_t xOrigin,        //< X-axis origin for search operation
+            zOrigin,        //< Z-axis origin for search operation
+            searchWidth,    //< Limit along x-axis to search
+            searchHeight;   //< Limit along z-axis to search
+    int boxWidth,           //< Width of box of chunks to search for
+        boxHeight;          //< Height of box of chunks to search for
+};
 
 /**
  * @brief Calculates if a chunk is a slime chunk using chunk block position.
@@ -65,18 +79,12 @@ void generateMap(int64_t, int32_t, int32_t, unsigned int, unsigned int);
 
 /**
  * @brief Perform a linear search to find boxes of slime chunks in a given height and width.
- * 
- * @param seed Seed of world to check.
- * @param xOrigin Chunk block origin x value to start check at.
- * @param yOrigin Chunk block origin z valye to start check at.
- * @param searchWidth Width of search in chunks.
- * @param searchHeight Height of search in chunks.
- * @param boxWidth Width of box to search for in chunks.
- * @param boxHeight Height of box to search for in chunks.
+ *
+ * @param params Parameters for box search.
  * 
  * @returns Report containing all chunks that fit the specified grouping.
  */
-struct SlimeReport * linearBoxSearch(int64_t, int32_t, int32_t, int32_t, int32_t, int, int);
+struct SlimeReport * linearBoxSearch(struct SearchParameters);
 
 /**
  * @brief Print slime chunk report to terminal.

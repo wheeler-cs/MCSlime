@@ -53,13 +53,16 @@ void mainMenu()
                     if(componentQuant == 8)
                     {
                         struct SlimeReport * report;
-                        report = linearBoxSearch((int64_t)atoi(command[1]),
-                                                 (int32_t)atoi(command[2]),
-                                                 (int32_t)atoi(command[3]),
-                                                 (int32_t)atoi(command[4]),
-                                                 (int32_t)atoi(command[5]),
-                                                 (int32_t)atoi(command[6]),
-                                                 (int32_t)atoi(command[7]));
+                        struct SearchParameters params;
+                        char * end = NULL;
+                        params.seed         = (int64_t)strtoll(command[1], &end, 10);
+                        params.xOrigin      = (int32_t)atoi(command[2]);
+                        params.zOrigin      = (int32_t)atoi(command[3]);
+                        params.searchWidth  = (int32_t)atoi(command[4]);
+                        params.searchHeight = (int32_t)atoi(command[5]);
+                        params.boxWidth     = (int32_t)atoi(command[6]);
+                        params.boxHeight    = (int32_t)atoi(command[7]);
+                        report = linearBoxSearch(params);
                         deallocateReport(report);
                     }
                 }
@@ -156,7 +159,7 @@ void printHelp()
     printf("\n\n\tbox [seed] [ox] [oy] [sw] [sh] [bw] [bh]");
     printf("\n\t\tseed: Seed of world");
     printf("\n\t\tox: X-axis origin chunk block");
-    printf("\n\t\toy: Y-axis origin chunk block");
+    printf("\n\t\toz: Z-axis origin chunk block");
     printf("\n\t\tsw: Width of search");
     printf("\n\t\tsh: Height of search");
     printf("\n\t\tbw: Width of box to find");
@@ -164,19 +167,19 @@ void printHelp()
     printf("\n");
 }
 
-void printProgressBar(unsigned int x, unsigned int y, unsigned int width, double progress)
+void printProgressBar(unsigned int row, unsigned int column, unsigned int width, double progress)
 {
     unsigned int filled, i;
     // Terminal indexing starts at 1, not 0
-    if(x < 1)
+    if(column < 1)
     {
-        x = 1;
+        column = 1;
     }
-    if(y < 1)
+    if(row < 1)
     {
-        y = 1;
+        row = 1;
     }
-    setCursorPosition(y, x);
+    setCursorPosition(row, column);
     // Print filled portion of bar
     filled = width * progress;
     for(i = 0; i < filled; i++)

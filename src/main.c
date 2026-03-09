@@ -11,6 +11,7 @@ int main(int argc, char ** argv)
     {
         struct ProgramState pState = parseArgv(argc, argv);
         struct SlimeReport * report;
+        struct SearchParameters params;
         switch(pState.mode)
         {
             // Check if coordinates are in slime chunk
@@ -18,13 +19,14 @@ int main(int argc, char ** argv)
                 break;
             // Perform search for box of slime chunks
             case MODE_BOX:
-                report = linearBoxSearch(pState.seed,
-                                         pState.xVal,
-                                         pState.zVal,
-                                         pState.xRange,
-                                         pState.zRange,
-                                         pState.width,
-                                         pState.height);
+                params.seed         = pState.seed;
+                params.xOrigin      = pState.xVal;
+                params.zOrigin      = pState.zVal;
+                params.searchWidth  = pState.xRange;
+                params.searchHeight = pState.zRange;
+                params.boxWidth     = pState.width;
+                params.boxHeight    = pState.height;
+                report = linearBoxSearch(params);
                 deallocateReport(report);
                 break;
             // Error in argument handling, just exit
